@@ -47,7 +47,7 @@ def create_planets():
 
 
 @planets_bp.route("", methods =["GET"])
-def read_planets():
+def read_all_planets():
 # TODO  create logic to handle a 404 error
 
     planet_title_query = request.args.get("title")
@@ -73,22 +73,23 @@ def read_planets():
         planets = Planet.query.order_by(Planet.moons.desc())
     else:
         planets = Planet.query.all()
-
-    planet_response = []
     
+    if not planets:
+        return make_response({"error": "Planet not found"}, 404)
+    
+    planet_response = []
     for planet in planets:
         for planet in planets:
             planet_response.append(
             planet.to_dict()
         )
-    if not planets:
-        return make_response({"error": "Planet not found"}, 404)
     return jsonify(planet_response), 200
 
 
 
+
 @planets_bp.route("/<planet_id>", methods=["GET"])
-def get_planet(planet_id):
+def get_one_planet(planet_id):
 
     planet= get_planet_from_id(planet_id)
 
