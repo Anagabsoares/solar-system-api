@@ -75,12 +75,14 @@ def read_planets():
         planets = Planet.query.all()
 
     planet_response = []
-
+    
     for planet in planets:
         for planet in planets:
             planet_response.append(
             planet.to_dict()
         )
+    if not planets:
+        return make_response({"error": "Planet not found"}, 404)
     return jsonify(planet_response), 200
 
 
